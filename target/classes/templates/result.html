@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Binary Calculator – Result</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .result-box { background: #f0f8ff; border: 1px solid #aad; padding: 20px; display: inline-block; border-radius: 6px; }
+        a { margin-right: 20px; text-decoration: none; color: #06c; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Result</h1>
+    <div class="result-box">
+        <p>
+            <strong th:text="${operand1}">0</strong>
+            <span th:text="${operator}">+</span>
+            <strong th:text="${operand2}">0</strong>
+            =
+            <strong th:text="${result}">0</strong>
+        </p>
+    </div>
+    <br/><br/>
+    <a th:href="@{/}">New Calculation</a>
+    <a th:href="@{/(operand1=${result})}">Continue Calculation</a>
+</body>
+</html>

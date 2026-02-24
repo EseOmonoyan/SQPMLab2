@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Binary Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #333; }
+        label { display: inline-block; width: 100px; }
+        input, select { margin: 5px 0; padding: 4px; }
+        button { margin-top: 10px; padding: 6px 16px; }
+    </style>
+</head>
+<body>
+    <h1>Binary Calculator</h1>
+    <form action="/" method="post">
+        <div>
+            <label>Operand 1:</label>
+            <input type="text" name="operand1"
+                   th:value="${operand1}"
+                   th:autofocus="${operand1Focused}"
+                   id="operand1"/>
+        </div>
+        <div>
+            <label>Operator:</label>
+            <select name="operator">
+                <option value="+">+ (Add)</option>
+                <option value="*">* (Multiply)</option>
+                <option value="&">&amp; (AND)</option>
+                <option value="|">| (OR)</option>
+            </select>
+        </div>
+        <div>
+            <label>Operand 2:</label>
+            <input type="text" name="operand2"
+                   th:autofocus="${!operand1Focused}"
+                   id="operand2"/>
+        </div>
+        <button type="submit">=</button>
+    </form>
+</body>
+</html>
