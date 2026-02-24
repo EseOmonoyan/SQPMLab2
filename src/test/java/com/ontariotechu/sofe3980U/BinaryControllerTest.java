@@ -19,11 +19,8 @@ public class BinaryControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // ---------------------------------------------------------------
-    // GET "/" — calculator page
-    // ---------------------------------------------------------------
-
-    /** TC-W-01: GET "/" with no params shows empty calculator */
+    // Load the calculator page
+    // GET "/" with no params shows empty calculator
     @Test
     public void testGetCalculatorEmpty() throws Exception {
         mockMvc.perform(get("/"))
@@ -31,8 +28,7 @@ public class BinaryControllerTest {
                 .andExpect(view().name("calculator"))
                 .andExpect(model().attribute("operand1", ""));
     }
-
-    /** TC-W-02: GET "/?operand1=101" pre-fills operand1 */
+    // GET "/?operand1=101" pre-fills operand1
     @Test
     public void testGetCalculatorWithOperand1() throws Exception {
         mockMvc.perform(get("/").param("operand1", "101"))
@@ -41,11 +37,8 @@ public class BinaryControllerTest {
                 .andExpect(model().attribute("operand1", "101"));
     }
 
-    // ---------------------------------------------------------------
-    // POST "/" — addition
-    // ---------------------------------------------------------------
-
-    /** TC-W-03: 111 + 1010 = 10001 */
+    // Addition
+    // 111 + 1010 -> 10001
     @Test
     public void testAddition() throws Exception {
         mockMvc.perform(post("/")
@@ -56,8 +49,7 @@ public class BinaryControllerTest {
                 .andExpect(view().name("result"))
                 .andExpect(model().attribute("result", "10001"));
     }
-
-    /** TC-W-04: 0 + 0 = 0 (boundary case) */
+    // 0 + 0 -> 0
     @Test
     public void testAdditionZero() throws Exception {
         mockMvc.perform(post("/")
@@ -69,11 +61,21 @@ public class BinaryControllerTest {
                 .andExpect(model().attribute("result", "0"));
     }
 
-    // ---------------------------------------------------------------
-    // POST "/" — multiplication
-    // ---------------------------------------------------------------
+    // 1111 + 1 -> 10000
+    @Test
+    public void testAdditionCarry() throws Exception {
+        mockMvc.perform(post("/")
+                .param("operand1", "1111")
+                .param("operator", "+")
+                .param("operand2", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("result"))
+                .andExpect(model().attribute("result", "10000"));
+    }
 
-    /** TC-W-05: 101 * 11 = 1111 (5 * 3 = 15) */
+
+    // Multiplication
+    // 101 * 11 -> 1111
     @Test
     public void testMultiplication() throws Exception {
         mockMvc.perform(post("/")
@@ -84,8 +86,7 @@ public class BinaryControllerTest {
                 .andExpect(view().name("result"))
                 .andExpect(model().attribute("result", "1111"));
     }
-
-    /** TC-W-06: 1010 * 0 = 0 (multiply by zero) */
+    // 1010 * 0 -> 0
     @Test
     public void testMultiplicationByZero() throws Exception {
         mockMvc.perform(post("/")
@@ -97,11 +98,8 @@ public class BinaryControllerTest {
                 .andExpect(model().attribute("result", "0"));
     }
 
-    // ---------------------------------------------------------------
-    // POST "/" — bitwise AND
-    // ---------------------------------------------------------------
-
-    /** TC-W-07: 1100 & 1010 = 1000 */
+    // Bitwise AND
+    // 1100 & 1010 -> 1000
     @Test
     public void testBitwiseAnd() throws Exception {
         mockMvc.perform(post("/")
@@ -112,8 +110,7 @@ public class BinaryControllerTest {
                 .andExpect(view().name("result"))
                 .andExpect(model().attribute("result", "1000"));
     }
-
-    /** TC-W-08: 1111 & 0000 = 0 */
+    // 1111 & 0000 -> 0
     @Test
     public void testBitwiseAndWithZero() throws Exception {
         mockMvc.perform(post("/")
@@ -125,11 +122,8 @@ public class BinaryControllerTest {
                 .andExpect(model().attribute("result", "0"));
     }
 
-    // ---------------------------------------------------------------
-    // POST "/" — bitwise OR
-    // ---------------------------------------------------------------
-
-    /** TC-W-09: 1100 | 1010 = 1110 */
+    // Bitwise OR
+    // 1100 | 1010 -> 1110
     @Test
     public void testBitwiseOr() throws Exception {
         mockMvc.perform(post("/")
@@ -140,8 +134,7 @@ public class BinaryControllerTest {
                 .andExpect(view().name("result"))
                 .andExpect(model().attribute("result", "1110"));
     }
-
-    /** TC-W-10: 0 | 1111 = 1111 */
+    // 0 | 1111 -> 1111
     @Test
     public void testBitwiseOrWithZero() throws Exception {
         mockMvc.perform(post("/")
@@ -153,11 +146,8 @@ public class BinaryControllerTest {
                 .andExpect(model().attribute("result", "1111"));
     }
 
-    // ---------------------------------------------------------------
-    // POST "/" — invalid operator → error page
-    // ---------------------------------------------------------------
-
-    /** TC-W-11: Invalid operator shows error view */
+    // Bad operator shows error page
+    // Invalid operator shows error view
     @Test
     public void testInvalidOperator() throws Exception {
         mockMvc.perform(post("/")
