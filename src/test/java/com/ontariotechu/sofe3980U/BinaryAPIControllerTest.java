@@ -19,11 +19,8 @@ public class BinaryAPIControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // ---------------------------------------------------------------
-    // Addition — string endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-01: 111 + 1010 = 10001 (string) */
+    // Addition
+    // 111 + 1010 -> 10001
     @Test
     public void testAddString() throws Exception {
         mockMvc.perform(get("/add")
@@ -32,8 +29,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("10001"));
     }
-
-    /** TC-A-02: 0 + 0 = 0 (string, boundary) */
+    // 0 + 0 -> 0
     @Test
     public void testAddZeroString() throws Exception {
         mockMvc.perform(get("/add")
@@ -42,8 +38,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("0"));
     }
-
-    /** TC-A-03: 1111 + 1 = 10000 (carry propagation, string) */
+    // 1111 + 1 -> 10000
     @Test
     public void testAddCarryString() throws Exception {
         mockMvc.perform(get("/add")
@@ -53,11 +48,8 @@ public class BinaryAPIControllerTest {
                 .andExpect(content().string("10000"));
     }
 
-    // ---------------------------------------------------------------
-    // Addition — JSON endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-04: 111 + 1010 = 10001 (JSON) */
+    // Addition (JSON)
+    // 111 + 1010 -> 10001
     @Test
     public void testAddJson() throws Exception {
         mockMvc.perform(get("/add_json")
@@ -68,11 +60,8 @@ public class BinaryAPIControllerTest {
                 .andExpect(jsonPath("$.operator").value("+"));
     }
 
-    // ---------------------------------------------------------------
-    // Multiplication — string endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-05: 101 * 11 = 1111 (5*3=15) */
+    // Multiplication
+    // 101 * 11 -> 1111
     @Test
     public void testMultiplyString() throws Exception {
         mockMvc.perform(get("/multiply")
@@ -81,8 +70,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("1111"));
     }
-
-    /** TC-A-06: 1010 * 0 = 0 (multiply by zero) */
+    // 1010 * 0 -> 0
     @Test
     public void testMultiplyByZeroString() throws Exception {
         mockMvc.perform(get("/multiply")
@@ -91,8 +79,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("0"));
     }
-
-    /** TC-A-07: 1 * 1 = 1 (minimal multiply) */
+    // 1 * 1 -> 1
     @Test
     public void testMultiplyOneByOne() throws Exception {
         mockMvc.perform(get("/multiply")
@@ -102,11 +89,8 @@ public class BinaryAPIControllerTest {
                 .andExpect(content().string("1"));
     }
 
-    // ---------------------------------------------------------------
-    // Multiplication — JSON endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-08: 110 * 10 = 1100 (6*2=12) JSON */
+    // Multiplication (JSON)
+    // 110 * 10 -> 1100
     @Test
     public void testMultiplyJson() throws Exception {
         mockMvc.perform(get("/multiply_json")
@@ -117,11 +101,8 @@ public class BinaryAPIControllerTest {
                 .andExpect(jsonPath("$.operator").value("*"));
     }
 
-    // ---------------------------------------------------------------
-    // Bitwise AND — string endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-09: 1100 & 1010 = 1000 */
+    // Bitwise AND
+    // 1100 & 1010 -> 1000
     @Test
     public void testAndString() throws Exception {
         mockMvc.perform(get("/and")
@@ -130,8 +111,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("1000"));
     }
-
-    /** TC-A-10: 1111 & 0 = 0 */
+    // 1111 & 0 -> 0
     @Test
     public void testAndWithZero() throws Exception {
         mockMvc.perform(get("/and")
@@ -140,8 +120,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("0"));
     }
-
-    /** TC-A-11: 1111 & 1111 = 1111 (same operands) */
+    // 1111 & 1111 -> 1111
     @Test
     public void testAndSameOperands() throws Exception {
         mockMvc.perform(get("/and")
@@ -151,11 +130,19 @@ public class BinaryAPIControllerTest {
                 .andExpect(content().string("1111"));
     }
 
-    // ---------------------------------------------------------------
-    // Bitwise AND — JSON endpoint
-    // ---------------------------------------------------------------
+    // 1010 & 11 -> 10
+    @Test
+    public void testAndDifferentLengths() throws Exception {
+        mockMvc.perform(get("/and")
+                .param("operand1", "1010")
+                .param("operand2", "11"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("10"));
+    }
 
-    /** TC-A-12: 1100 & 1010 = 1000 (JSON) */
+
+    // Bitwise AND (JSON)
+    // 1100 & 1010 -> 1000
     @Test
     public void testAndJson() throws Exception {
         mockMvc.perform(get("/and_json")
@@ -166,11 +153,8 @@ public class BinaryAPIControllerTest {
                 .andExpect(jsonPath("$.operator").value("&"));
     }
 
-    // ---------------------------------------------------------------
-    // Bitwise OR — string endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-13: 1100 | 1010 = 1110 */
+    // Bitwise OR
+    // 1100 | 1010 -> 1110
     @Test
     public void testOrString() throws Exception {
         mockMvc.perform(get("/or")
@@ -179,8 +163,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("1110"));
     }
-
-    /** TC-A-14: 0 | 1111 = 1111 */
+    // 0 | 1111 -> 1111
     @Test
     public void testOrWithZero() throws Exception {
         mockMvc.perform(get("/or")
@@ -189,8 +172,7 @@ public class BinaryAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("1111"));
     }
-
-    /** TC-A-15: 0 | 0 = 0 (all zeros) */
+    // 0 | 0 -> 0
     @Test
     public void testOrAllZeros() throws Exception {
         mockMvc.perform(get("/or")
@@ -200,11 +182,8 @@ public class BinaryAPIControllerTest {
                 .andExpect(content().string("0"));
     }
 
-    // ---------------------------------------------------------------
-    // Bitwise OR — JSON endpoint
-    // ---------------------------------------------------------------
-
-    /** TC-A-16: 1100 | 1010 = 1110 (JSON) */
+    // Bitwise OR (JSON)
+    // 1100 | 1010 -> 1110
     @Test
     public void testOrJson() throws Exception {
         mockMvc.perform(get("/or_json")
@@ -212,6 +191,17 @@ public class BinaryAPIControllerTest {
                 .param("operand2", "1010"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result").value("1110"))
+                .andExpect(jsonPath("$.operator").value("|"));
+    }
+
+    // 101 | 1 -> 101
+    @Test
+    public void testOrDifferentLengthsJson() throws Exception {
+        mockMvc.perform(get("/or_json")
+                .param("operand1", "101")
+                .param("operand2", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result").value("101"))
                 .andExpect(jsonPath("$.operator").value("|"));
     }
 }
